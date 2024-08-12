@@ -13,22 +13,14 @@ load_dotenv()
 
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-def process_image(image, prompt):
-    response = model.generate_content(prompt)
-    print(response)
-
-
 def say_hello(name : str) -> None:
     return f"Hello, {name}!"
 
-def parse_gemini_response(response):
-    # This function would parse Gemini's response and return a list of operations
-    # This is entirely speculative and would depend on Gemini's actual output format
-    return [{'type': 'cut', 'params': {'cut_point': 100}},
-            {'type': 'rotate', 'params': {'angle': 90}}]
-
-
 model = genai.GenerativeModel('gemini-1.5-flash', tools=[say_hello])
+
+def process_image(image, prompt):
+    response = model.generate_content(prompt)
+    print(response)
 
 # Streamlit UI
 st.title("Image Manipulation with Gemini")
