@@ -14,7 +14,9 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 def process_image(image, prompt):
-    chat = model.start_chat(enable_automatic_function_calling=False)
+    chat = model.start_chat()
+    # chat.send_message([image, prompt])
+    print(prompt)
     chat.send_message(prompt)
     response = chat.get_response()
     print(response)
@@ -40,10 +42,10 @@ prompt = st.text_input("Enter your manipulation prompt:")
 
 if uploaded_file is not None and prompt:
     image = Image.open(uploaded_file)
-    image_np = np.array(image)
+    # image_np = np.array(image)
     
     if st.button("Process Image"):
-        results = process_image(image_np, prompt)
+        results = process_image(image, prompt)
         
-        for i, result in enumerate(results):
-            st.image(result, caption=f"Result {i+1}", use_column_width=True)
+        # for i, result in enumerate(results):
+        #     st.image(result, caption=f"Result {i+1}", use_column_width=True)
