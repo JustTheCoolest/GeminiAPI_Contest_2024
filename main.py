@@ -4,44 +4,33 @@ import numpy as np
 from PIL import Image
 import io
 
-# Placeholder for Gemini API client
-# from gemini_api import GeminiClient
+import google.generativeai as genai
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 def process_image(image, prompt):
-    # Placeholder for Gemini API call
-    # result = gemini_client.process_image_and_prompt(image, prompt)
-    
-    # Placeholder for parsing Gemini's response and performing image operations
-    # This is highly speculative and would depend on Gemini's actual output format
-    operations = parse_gemini_response(result)
-    
-    processed_images = []
-    for op in operations:
-        if op['type'] == 'cut':
-            processed_images.extend(cut_image(image, op['params']))
-        elif op['type'] == 'rotate':
-            processed_images.append(rotate_image(image, op['params']))
-        # Add more operation types as needed
-    
-    return processed_images
+    chat = model.start_chat(enable_automatic_function_calling=False)
+    chat.send_message(prompt)
+    response = chat.get_response()
+    print(response)
 
-def cut_image(image, params):
-    # Implement cutting logic here
-    # This is a placeholder implementation
-    height, width = image.shape[:2]
-    cut_point = params.get('cut_point', width // 2)
-    return [image[:, :cut_point], image[:, cut_point:]]
 
-def rotate_image(image, params):
-    # Implement rotation logic here
-    angle = params.get('angle', 90)
-    return cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
+def say_hello(name):
+    return f"Hello, {name}!"
 
 def parse_gemini_response(response):
     # This function would parse Gemini's response and return a list of operations
     # This is entirely speculative and would depend on Gemini's actual output format
     return [{'type': 'cut', 'params': {'cut_point': 100}},
             {'type': 'rotate', 'params': {'angle': 90}}]
+
+
+model = genai.GenerativeModel('gemini-1.5-flash', tools=[say_hello])
 
 # Streamlit UI
 st.title("Image Manipulation with Gemini")
