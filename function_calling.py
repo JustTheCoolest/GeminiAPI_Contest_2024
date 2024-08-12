@@ -7,7 +7,7 @@ load_dotenv() ## load all the environment variables
 
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-def say_hello(name):
+def say_hello(name: str) -> None:
     return f"Hello, {name}!"
 
 model = genai.GenerativeModel('gemini-1.5-flash', tools = [say_hello])
