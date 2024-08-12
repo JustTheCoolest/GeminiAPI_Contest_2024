@@ -20,6 +20,10 @@ def call_function(function_call, functions):
     function_args = function_call.args
     return functions[function_name](**function_args)
 
+def display_result(result):
+    if type(result) == str:
+        st.write(result)
+
 def process_image(image, prompt):
     functions = {
         "say_hello": say_hello,
@@ -29,7 +33,7 @@ def process_image(image, prompt):
     part = response.candidates[0].content.parts[0]
     if part.function_call:
         result = call_function(part.function_call, functions)
-    print(result)
+    display_result(result)
 
 # Streamlit UI
 st.title("Image Manipulation with Gemini")
