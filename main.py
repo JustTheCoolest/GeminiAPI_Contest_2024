@@ -14,15 +14,11 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 def process_image(image, prompt):
-    chat = model.start_chat()
-    # chat.send_message([image, prompt])
-    print(prompt)
-    chat.send_message(prompt)
-    response = chat.get_response()
+    response = model.generate_content(prompt)
     print(response)
 
 
-def say_hello(name):
+def say_hello(name : str) -> None:
     return f"Hello, {name}!"
 
 def parse_gemini_response(response):
