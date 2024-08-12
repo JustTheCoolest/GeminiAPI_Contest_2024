@@ -37,6 +37,10 @@ def grayscale_image():
     global image
     return ImageOps.grayscale(image)
 
+def no_op():
+    global image
+    return image
+
 def call_function(function_call, functions):
     function_name = function_call.name
     function_args = function_call.args
@@ -60,6 +64,7 @@ def process_image(image, prompt):
         "zoom_image": zoom_image,
         "invert_image": invert_image,
         "grayscale_image": grayscale_image,
+        "no_op": no_op,
     }
     model = genai.GenerativeModel(model_name="gemini-1.5-flash", tools=functions.values())
     response = model.generate_content([image, pretext+prompt])
