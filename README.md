@@ -1,4 +1,8 @@
+# Star Cut AI
 
+**Edit images in download speed**
+
+Using the function calling features of Gemini to perform basic discrete image manipulation operations like cutting and rotating, using a prompt that is given in natural human language. The point is to prevent generative AI the power to spoil your images. By restricting Gemini to only be able to access hard coded functions (with flexibility) to manipulate the images in a safe manner, we ensure higher quality and trust. By being able to describe what we want in natural language, we get to do what we want faster and without the learning curve of traditional editing softwares.
 
 # Setup Instructions:
 
