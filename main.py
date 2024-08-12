@@ -1,5 +1,4 @@
 import streamlit as st
-import cv2
 import numpy as np
 from PIL import Image
 import io
@@ -16,7 +15,26 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 def say_hello(name : str) -> None:
     return f"Hello, {name}!"
 
-model = genai.GenerativeModel('gemini-1.5-flash', tools=[say_hello])
+functions = {
+    "say_hello": say_hello,
+}
+model = genai.GenerativeModel(model_name="gemini-1.5-flash", tools=functions.values())
+# chat = model.start_chat()
+response = model.generate_content(
+    "Say hi to Harsha"
+)
+response.candidates[0].content.parts
+def call_function(function_call, functions):
+    function_name = function_call.name
+    function_args = function_call.args
+    return functions[function_name](**function_args)
+
+
+part = response.candidates[0].content.parts[0]
+if part.function_call:
+    result = call_function(part.function_call, functions)
+
+print(result)
 
 def process_image(image, prompt):
     response = model.generate_content(prompt)
