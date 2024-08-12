@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+from PIL import ImageOps
 
 import google.generativeai as genai
 import os
@@ -14,9 +15,30 @@ def say_hello(name : str) -> None:
     return f"Hello, {name}!"
 
 def rotate_image(rotations: int):
-    "Hello World"
     global image
     return image.rotate(rotations * 90)
+
+def crop_image(left: int, upper: int, right: int, lower: int):
+    global image
+    return image.crop((left, upper, right, lower))
+
+def mirror_image():
+    global image
+    return ImageOps.mirror(image)
+
+def zoom_image(factor: float):
+    global image
+    width, height = image.size
+    new_width, new_height = width * factor, height * factor
+    return image.resize((int(new_width), int(new_height)), Image.ANTIALIAS)
+
+def invert_image():
+    global image
+    return ImageOps.invert(image)
+
+def grayscale_image():
+    global image
+    return ImageOps.grayscale(image)
 
 def call_function(function_call, functions):
     function_name = function_call.name
