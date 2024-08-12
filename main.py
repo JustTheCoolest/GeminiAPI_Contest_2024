@@ -66,8 +66,9 @@ def process_image(image, prompt):
     print(part)
     if part.function_call:
         result = call_function(part.function_call, functions)
-    print(result)
-    display_result(result)
+        print(result)
+        display_result(result)
+    else: st.write("I can't able understand the prompt")
 
 # Streamlit UI
 st.title("Image Manipulation with Gemini")
