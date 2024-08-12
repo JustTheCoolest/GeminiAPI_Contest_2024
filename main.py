@@ -15,6 +15,19 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 def say_hello(name : str) -> None:
     return f"Hello, {name}!"
 
+def rotate_image(image: Image, rotations: int) -> Image:
+    """
+    Rotates the given image by 90 degrees counter-clockwise the specified number of times.
+
+    Parameters:
+    image (PIL.Image): The image to rotate.
+    rotations (int): The number of 90-degree counter-clockwise rotations to apply.
+
+    Returns:
+    PIL.Image: The rotated image.
+    """
+    return image.rotate(rotations * 90)
+
 def call_function(function_call, functions):
     function_name = function_call.name
     function_args = function_call.args
@@ -23,10 +36,13 @@ def call_function(function_call, functions):
 def display_result(result):
     if type(result) == str:
         st.write(result)
+    elif type(result) == Image:
+        st.image(result, caption="Result", use_column_width=True)
 
 def process_image(image, prompt):
     functions = {
         "say_hello": say_hello,
+        "rotate_image": rotate_image,
     }
     model = genai.GenerativeModel(model_name="gemini-1.5-flash", tools=functions.values())
     response = model.generate_content(prompt)
