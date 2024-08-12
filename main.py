@@ -21,19 +21,15 @@ def call_function(function_call, functions):
     return functions[function_name](**function_args)
 
 def process_image(image, prompt):
-    response = model.generate_content(prompt)
     functions = {
         "say_hello": say_hello,
     }
     model = genai.GenerativeModel(model_name="gemini-1.5-flash", tools=functions.values())
-    # chat = model.start_chat()
-    response = model.generate_content(
-        prompt
-    )
+    response = model.generate_content(prompt)
     part = response.candidates[0].content.parts[0]
     if part.function_call:
         result = call_function(part.function_call, functions)
-    print(response)
+    print(result)
 
 # Streamlit UI
 st.title("Image Manipulation with Gemini")
