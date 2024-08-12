@@ -11,9 +11,6 @@ load_dotenv()
 
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-def say_hello(name : str) -> None:
-    return f"Hello, {name}!"
-
 def rotate_image(rotations: int):
     global image
     return image.rotate(rotations * 90)
@@ -57,8 +54,12 @@ def process_image(image, prompt):
     You are a photo editing app. You receive an image and a prompt to manipulate the image in some way. You don't have to manipulate the image yourself, we have other librarires to do that job. You just have to call the appropriate function with the image and prompt as arguments
     """
     functions = {
-        "say_hello": say_hello,
         "rotate_image": rotate_image,
+        "crop_image": crop_image,
+        "mirror_image": mirror_image,
+        "zoom_image": zoom_image,
+        "invert_image": invert_image,
+        "grayscale_image": grayscale_image,
     }
     model = genai.GenerativeModel(model_name="gemini-1.5-flash", tools=functions.values())
     response = model.generate_content([image, pretext+prompt])
