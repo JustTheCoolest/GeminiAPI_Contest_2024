@@ -1,7 +1,5 @@
 import streamlit as st
-import numpy as np
 from PIL import Image
-import io
 
 import google.generativeai as genai
 import os
@@ -15,7 +13,8 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 def say_hello(name : str) -> None:
     return f"Hello, {name}!"
 
-def rotate_image(image: Image, rotations: int) -> Image:
+def rotate_image(rotations: int):
+    global image
     """
     Rotates the given image by 90 degrees counter-clockwise the specified number of times.
 
@@ -47,6 +46,7 @@ def process_image(image, prompt):
     model = genai.GenerativeModel(model_name="gemini-1.5-flash", tools=functions.values())
     response = model.generate_content(prompt)
     part = response.candidates[0].content.parts[0]
+    print(part)
     if part.function_call:
         result = call_function(part.function_call, functions)
     display_result(result)
